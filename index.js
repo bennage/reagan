@@ -5,7 +5,7 @@ const colors = require('colors');
 
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!-- source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
-const codeDelimiter = /```[\w]*/ig;
+const codeDelimiter = /\s*```[\w]*\s*/ig;
 
 var markdownFiles = [
     '../azure-content-pr/includes/guidance-compute-single-vm-linux.md',
@@ -93,8 +93,9 @@ function snip(source, firstLine, lastLine) {
 
 function renderDiff(diff) {
 
+    process.stdout.write(`\n`);
     process.stdout.write(`\n>> ${diff.file}`);
-    process.stdout.write(`\n>> lines ${diff.firstLine} - ${diff.lastLine}`);
+    process.stdout.write(`\n>> lines ${diff.firstLine} - ${diff.lastLine}\n`);
 
     if (diff.length === 1) {
         process.stdout.write('no change');
@@ -108,6 +109,10 @@ function renderDiff(diff) {
             part.removed ? 'red' : 'grey';
         process.stderr.write(part.value[color]);
     });
+}
+
+function countDifferingBlocks(diffs) {
+    return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
 var processFiles = markdownFiles.map(filePath => {
@@ -142,10 +147,6 @@ var processFiles = markdownFiles.map(filePath => {
                 });
         });
 });
-
-function countDifferingBlocks(diffs) {
-    return diffs.filter(x => x.length > 1).length;
-}
 
 Promise.all(processFiles)
     .then(results => {
