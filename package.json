@@ -1,0 +1,19 @@
+{
+  "name": "sample-validation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Christopher Bennage",
+  "license": "MIT",
+  "engines": {
+    "node": ">=6.4 <7.0"
+  },
+  "dependencies": {
+    "colors": "^1.1.2",
+    "diff": "^3.0.0",
+    "mz": "^2.4.0"
+  }
+}
