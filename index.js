@@ -7,7 +7,10 @@ const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!-- source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
 const codeDelimiter = /```[\w]*/ig;
 
-var filePath = '../azure-content-pr/includes/guidance-compute-single-vm-linux.md';
+var markdownFiles = [
+    '../azure-content-pr/includes/guidance-compute-single-vm-linux.md',
+    '../azure-content-pr/includes/guidance-compute-single-vm-windows.md'
+];
 
 function httpsGet(url) {
 
@@ -107,31 +110,53 @@ function renderDiff(diff) {
     });
 }
 
-fs.readFile(filePath, 'utf8')
-    .then(file => {
+var processFiles = markdownFiles.map(filePath => {
 
-        var codeBlocks = scanFileForCodeBlocks(file);
+    return fs.readFile(filePath, 'utf8')
+        .then(file => {
 
-        var validations = codeBlocks.map(block => {
-            var src = block.source;
-            var md = block.markdown;
+            var codeBlocks = scanFileForCodeBlocks(file);
 
-            return httpsGet(src.url)
-                .then(code => {
-                    var snippet = snip(code, src.firstLine, src.lastLine);
-                    var diff = jsdiff.diffChars(md.code, snippet);
-                    diff.file = filePath;
-                    diff.firstLine = md.firstLine;
-                    diff.lastLine = md.lastLine;
-                    return diff;
+            var validations = codeBlocks.map(block => {
+                var src = block.source;
+                var md = block.markdown;
+
+                return httpsGet(src.url)
+                    .then(code => {
+                        var snippet = snip(code, src.firstLine, src.lastLine);
+                        var diff = jsdiff.diffChars(md.code, snippet);
+                        diff.file = filePath;
+                        diff.firstLine = md.firstLine;
+                        diff.lastLine = md.lastLine;
+                        return diff;
+                    });
+            });
+
+            return Promise.all(validations)
+                .then(
+                diffs => {
+                    return {
+                        filePath: filePath,
+                        diffs: diffs
+                    };
                 });
         });
+});
 
-        return Promise.all(validations)
-            .then(
-            diffs => {
-                diffs.map(renderDiff);
-            },
-            e => { console.dir(e); });
+function countDifferingBlocks(diffs) {
+    return diffs.filter(x => x.length > 1).length;
+}
 
+Promise.all(processFiles)
+    .then(results => {
+
+        results.forEach(r => {
+            r.diffs.map(renderDiff);
+        });
+
+        console.log();
+        results.forEach(r => {
+            console.log(`${r.filePath}`);
+            console.log(`>> ${countDifferingBlocks(r.diffs)} block(s) differ`);
+        });
     });
