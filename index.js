@@ -1,6 +1,7 @@
 
 const colors = require('colors');
 const processFiles = require('./processFiles');
+const listFiles = require('./listFiles');
 
 var markdownFiles = [
     '../azure-content-pr/includes/guidance-compute-single-vm-linux.md',
@@ -31,17 +32,19 @@ function countDifferingBlocks(diffs) {
     return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
-processFiles(markdownFiles)
-    .then(results => {
+listFiles().then(markdownFiles => {
+    return processFiles(markdownFiles)
+        .then(results => {
 
-        // output for console
-        results.forEach(r => {
-            r.diffs.map(renderDiff);
-        });
+            // output for console
+            results.forEach(r => {
+                r.diffs.map(renderDiff);
+            });
 
-        console.log();
-        results.forEach(r => {
-            console.log(`${r.filePath}`);
-            console.log(`>> ${countDifferingBlocks(r.diffs)} block(s) differ`);
+            console.log();
+            results.forEach(r => {
+                console.log(`${r.filePath}`);
+                console.log(`>> ${countDifferingBlocks(r.diffs)} block(s) differ`);
+            });
         });
-    });
+});

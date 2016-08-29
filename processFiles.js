@@ -1,4 +1,3 @@
-
 const fs = require('mz/fs');
 const https = require('https');
 const jsdiff = require('diff');
