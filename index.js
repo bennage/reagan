@@ -32,19 +32,23 @@ function countDifferingBlocks(diffs) {
     return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
-listFiles().then(markdownFiles => {
-    return processFiles(markdownFiles)
-        .then(results => {
+listFiles()
+    .then(processFiles)
+    .then(results => {
 
-            // output for console
-            results.forEach(r => {
-                r.diffs.map(renderDiff);
-            });
-
-            console.log();
-            results.forEach(r => {
-                console.log(`${r.filePath}`);
-                console.log(`>> ${countDifferingBlocks(r.diffs)} block(s) differ`);
-            });
+        // output for console
+        results.forEach(r => {
+            r.diffs.map(renderDiff);
         });
-});
+
+        console.log();
+        console.log(`processed ${results.length} files`);
+
+        results.forEach(r => {
+            var count = countDifferingBlocks(r.diffs);
+            if (count === 0) return;
+
+            console.log(`${r.filePath}`);
+            console.log(`>> ${count} block(s) differ`);
+        });
+    });
