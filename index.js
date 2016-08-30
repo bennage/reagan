@@ -3,11 +3,6 @@ const colors = require('colors');
 const processFiles = require('./processFiles');
 const listFiles = require('./listFiles');
 
-var markdownFiles = [
-    '../azure-content-pr/includes/guidance-compute-single-vm-linux.md',
-    '../azure-content-pr/includes/guidance-compute-single-vm-windows.md'
-];
-
 function renderDiff(diff) {
 
     process.stdout.write(`\n`);

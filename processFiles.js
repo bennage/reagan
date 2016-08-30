@@ -102,7 +102,7 @@ module.exports = function (markdownFiles) {
                     return httpsGet(src.url)
                         .then(code => {
                             var snippet = snip(code, src.firstLine, src.lastLine);
-                            var diff = jsdiff.diffChars(md.code, snippet);
+                            var diff = jsdiff.diffChars(md.code.trim(), snippet.trim());
                             diff.file = filePath;
                             diff.firstLine = md.firstLine;
                             diff.lastLine = md.lastLine;

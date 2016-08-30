@@ -12,7 +12,7 @@ var prefixes = [
     'best-practices-'
 ];
 
-function fileFilter(file) {
+function byFilePrefix(file) {
     return prefixes.some(prefix => file.startsWith(prefix));
 }
 
@@ -23,7 +23,7 @@ module.exports = function () {
             .readdir(folder)
             .then(files => {
                 return files
-                    .filter(fileFilter)
+                    .filter(byFilePrefix)
                     .map(file => path.join(folder, file));
             });
     });
