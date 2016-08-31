@@ -1,4 +1,6 @@
+#!/usr/bin/env node
 
+const program = require('commander');
 const colors = require('colors');
 const processFiles = require('./processFiles');
 const listFiles = require('./listFiles');
@@ -27,9 +29,27 @@ function countDifferingBlocks(diffs) {
     return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
-listFiles()
+function collect(val, memo) {
+    memo.push(val);
+    return memo;
+}
+
+program
+    .version('0.0.1')
+    .option('-f, --folder [folder]', 'folder with markdown files to search', collect, [])
+    .option('-p, --prefix [file-prefix]', 'file prefix for filtering markdown files', collect, [])
+    .parse(process.argv);
+
+if (program.folder.length === 0) program.folder[0] = '.';
+
+listFiles(program.folder, program.prefix)
     .then(processFiles)
     .then(results => {
+
+        if (results.length === 0) {
+            console.log(`Nothing was found!`);
+            return;
+        }
 
         // output for console
         results.forEach(r => {

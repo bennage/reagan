@@ -1,7 +1,7 @@
 {
-  "name": "sample-validation",
-  "version": "1.0.0",
-  "description": "",
+  "name": "reagan",
+  "version": "0.0.1",
+  "description": "trust, but verify",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,11 +9,17 @@
   "author": "Christopher Bennage",
   "license": "MIT",
   "engines": {
-    "node": ">=6.4 <7.0"
+    "node": ">= 6.4.x"
   },
+  "preferGlobal": true,
   "dependencies": {
     "colors": "^1.1.2",
+    "commander": "^2.9.0",
     "diff": "^3.0.0",
     "mz": "^2.4.0"
-  }
+  },
+  "bin": {
+    "reagan": "index.js"
+  },
+  "readmeFilename": "README.md"
 }

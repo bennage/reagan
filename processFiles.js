@@ -2,6 +2,8 @@ const fs = require('mz/fs');
 const https = require('https');
 const jsdiff = require('diff');
 
+const ProgressBar = require('progress');
+
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!-- source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
 const codeDelimiter = /\s*```[\w]*\s*/ig;
@@ -92,12 +94,11 @@ module.exports = function (markdownFiles) {
         return fs
             .readFile(filePath, 'utf8')
             .then(file => {
-
                 var codeBlocks = scanFileForCodeBlocks(file);
-
                 var validations = codeBlocks.map(block => {
                     var src = block.source;
                     var md = block.markdown;
+                    console.log(filePath);
 
                     return httpsGet(src.url)
                         .then(code => {
