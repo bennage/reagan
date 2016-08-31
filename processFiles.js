@@ -2,8 +2,6 @@ const fs = require('mz/fs');
 const https = require('https');
 const jsdiff = require('diff');
 
-const ProgressBar = require('progress');
-
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!-- source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
 const codeDelimiter = /\s*```[\w]*\s*/ig;
