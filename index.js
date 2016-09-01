@@ -29,20 +29,13 @@ function countDifferingBlocks(diffs) {
     return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
-function collect(val, memo) {
-    memo.push(val);
-    return memo;
-}
-
 program
     .version('0.0.1')
-    .option('-f, --folder [folder]', 'folder with markdown files to search', collect, [])
-    .option('-p, --prefix [file-prefix]', 'file prefix for filtering markdown files', collect, [])
+    .option('-f, --folder [folder]', 'the folder to search', '.')
+    .option('-i, --include [glob]', 'the pattern to match (defaults to **/*.md)', '**/*.md')
     .parse(process.argv);
 
-if (program.folder.length === 0) program.folder[0] = '.';
-
-listFiles(program.folder, program.prefix)
+listFiles(program.folder, program.include)
     .then(processFiles)
     .then(results => {
 
