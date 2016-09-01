@@ -1,6 +1,7 @@
 var listFiles = require('./listFiles');
 
-listFiles(['/Users/bennage/dev/azure-content-pr/articles/guidance'])
+listFiles('~/dev/azure-content-pr/articles/','**/*.md')
     .then(files => {
+        console.dir(files);
         console.log(files.length);
     });
