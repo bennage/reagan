@@ -16,7 +16,6 @@ function scanFolder(folders, prefixes) {
                 return files.map(file => {
 
                     var filePath = path.join(folder, file);
-
                     return fs
                         .stat(filePath)
                         .then(stat => { return { filePath: filePath, stat: stat }; });
@@ -43,10 +42,6 @@ function scanFolder(folders, prefixes) {
                 .then(x => {
                     return x.concat(files);
                 });
-            //        .then(files => {
-            // return files
-            //     .filter(byFilePrefix)
-            //     .map(file => path.join(folder, file));
         })
         .catch(err => {
             console.dir(err);
