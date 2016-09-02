@@ -16,6 +16,13 @@ function renderDiff(diff) {
         // grey for common parts 
         var color = part.added ? 'green' :
             part.removed ? 'red' : 'grey';
+
+        // replace spaces with middot
+        if (part.added || part.removed) {
+            part.value = part.value.replace(/ /g, '·');
+            //TODO: tabs are not showing up in the diff
+            // part.value = part.value.replace(/\t/g, '¯');
+        }
         process.stderr.write(part.value[color]);
     });
 }
