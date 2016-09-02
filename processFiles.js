@@ -60,11 +60,12 @@ function scanFileForCodeBlocks(file) {
 
         var start = codeDelimiter.exec(file);
         var end = codeDelimiter.exec(file);
-        var language = start[1];
-        var language_regex = new RegExp('^[#\\\\]*\\s*' + language + '$', 'igm');
-
 
         var code = file.substring(start.index + start[0].length, end.index);
+
+        // remove a comment indentifying the language
+        var language = start[1];
+        var language_regex = new RegExp('^[#\\\\]*\\s*' + language + '$', 'igm');
         var languageIdComment = language_regex.exec(code);
         if (languageIdComment) {
             code = code.replace(languageIdComment[0], '');
