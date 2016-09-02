@@ -3,7 +3,7 @@ const https = require('https');
 const jsdiff = require('diff');
 
 const rawUrlBase = 'https://raw.githubusercontent.com/';
-const sourcePattern = /<!-- source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
+const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
 const codeDelimiter = /\s*```[\w]*\s*/ig;
 
 function httpsGet(url) {
@@ -96,7 +96,6 @@ module.exports = function (markdownFiles) {
                 var validations = codeBlocks.map(block => {
                     var src = block.source;
                     var md = block.markdown;
-                    console.log(filePath);
 
                     return httpsGet(src.url)
                         .then(code => {
