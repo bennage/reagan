@@ -1,4 +1,5 @@
 # Reagan
+_Trust, but verify._
 
 Reagan is a tool for verifying that code samples embedded in a markdown document are in sync with the GitHub-hosted source files.
 
