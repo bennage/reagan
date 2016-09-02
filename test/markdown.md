@@ -45,8 +45,8 @@ return new Promise((resolve, reject) => {
 <!-- source: https://github.com/bennage/reagan/blob/master/listFiles.js#L7-->
 
 ```javascript
-//javascript
-return new Promise((resolve, reject) => {
+    //javascript
+    return new Promise((resolve, reject) => {
 ```
 
 Donec eget commodo nisi. Quisque eu pellentesque erat. Donec aliquet, velit nec ultrices bibendum, mauris erat cursus magna, a porttitor mi leo sit amet nulla. Etiam bibendum blandit lobortis. Vivamus dui mauris, consectetur ut eros volutpat, ultrices vehicula ex. Nunc eu imperdiet sem, non maximus purus. Mauris quis rhoncus elit. Cras dui enim, scelerisque eu neque ac, congue accumsan sem. Pellentesque sollicitudin libero at ex condimentum pretium. Integer ultricies augue nec felis consequat, sit amet cursus libero varius.
