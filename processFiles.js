@@ -4,7 +4,7 @@ const jsdiff = require('diff');
 
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
-const codeDelimiter = /\s*```[\w]*\s*/ig;
+const codeDelimiter = /\s*```([\w]*)\s*/ig;
 
 function httpsGet(url) {
 
@@ -60,8 +60,15 @@ function scanFileForCodeBlocks(file) {
 
         var start = codeDelimiter.exec(file);
         var end = codeDelimiter.exec(file);
+        var language = start[1];
+        var language_regex = new RegExp('^[#\\\\]*\\s*' + language + '$', 'igm');
+
 
         var code = file.substring(start.index + start[0].length, end.index);
+        var languageIdComment = language_regex.exec(code);
+        if (languageIdComment) {
+            code = code.replace(languageIdComment[0], '');
+        }
 
         var codeFirstLine = file.substr(0, start.index).split('\n').length;
         var codeLastLine = codeFirstLine + code.split('\n').length - 1;
