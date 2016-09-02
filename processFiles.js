@@ -4,7 +4,7 @@ const jsdiff = require('diff');
 
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
-const codeDelimiter = /\s*```([\w]*)\s*/ig;
+const codeDelimiter = /[ \t]*```([\w]*)\s*\n/ig;
 
 function httpsGet(url) {
 
@@ -41,6 +41,20 @@ function snip(source, firstLine, lastLine) {
     }
 
     return snippet;
+}
+
+function removeLeadingWhitespace(block) {
+    const leadingWhitespace = /^(\s*)/g;
+
+    var lines = block.split('\n');
+
+    // leading white space is determined by the first lines
+    var result = leadingWhitespace.exec(lines[0]);
+    if (result) {
+        lines = lines.map(l => l.slice(result[1].length));
+    }
+
+    return lines.join('\n');
 }
 
 function scanFileForCodeBlocks(file) {
@@ -108,7 +122,11 @@ module.exports = function (markdownFiles) {
                     return httpsGet(src.url)
                         .then(code => {
                             var snippet = snip(code, src.firstLine, src.lastLine);
-                            var diff = jsdiff.diffChars(md.code.trim(), snippet.trim());
+
+                            var oldCode = removeLeadingWhitespace(md.code);
+                            var newCode = removeLeadingWhitespace(snippet);
+
+                            var diff = jsdiff.diffChars(oldCode, newCode);
                             diff.file = filePath;
                             diff.firstLine = md.firstLine;
                             diff.lastLine = md.lastLine;
