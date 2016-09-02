@@ -4,6 +4,11 @@ const glob = require('resolve-glob');
 
 function scanFolder(cwd, pattern) {
 
+    var context = {
+        cwd: cwd,
+        pattern: pattern
+    };
+
     return new Promise((resolve, reject) => {
 
         glob(pattern, { cwd: cwd }, (err, files) => {
@@ -11,9 +16,8 @@ function scanFolder(cwd, pattern) {
                 reject(err);
                 return;
             }
-            resolve(files);
+            resolve({ files: files, context: context });
         });
-
     });
 }
 

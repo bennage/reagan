@@ -1,6 +1,7 @@
+const rawUrlBase = 'https://raw.githubusercontent.com/';
+
 const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
 const codeDelimiter = /[ \t]*```([\w]*)\s*\n/ig;
-const rawUrlBase = 'https://raw.githubusercontent.com/';
 
 function removeLanguageComment(language, code) {
     // TODO: there should be an option to disable this
@@ -34,7 +35,7 @@ module.exports = function (file) {
         var code = file.substring(start.index + start[0].length, end.index);
 
         // remove a comment indentifying the language
-        code = removeLanguageComment(start[1], code)
+        code = removeLanguageComment(start[1], code);
 
         var codeFirstLine = file.substr(0, start.index).split('\n').length;
         var codeLastLine = codeFirstLine + code.split('\n').length - 1;

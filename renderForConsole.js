@@ -1,17 +1,21 @@
 const colors = require('colors');
 
-function renderDiff(diff) {
+function renderDiff(block) {
 
-    process.stdout.write(`\n`);
-    process.stdout.write(`\n>> ${diff.file}`);
-    process.stdout.write(`\n>> lines ${diff.firstLine} - ${diff.lastLine}\n`);
+    var location = `lines ${block.firstLine}-${block.lastLine}`;
 
-    if (diff.length === 1) {
-        process.stdout.write('no change');
+    if (block.diff.length === 1) {
+        process.stdout.write('✓ '.green);
+        process.stdout.write(location);
+        process.stdout.write('\n');
         return;
     }
 
-    diff.forEach(part => {
+    process.stderr.write('✗ '.red);
+    process.stderr.write(location);
+    process.stderr.write('\n');
+
+    block.diff.forEach(part => {
         // green for additions, red for deletions 
         // grey for common parts 
         var color = part.added ? 'green' :
@@ -31,22 +35,19 @@ function countDifferingBlocks(diffs) {
     return diffs.filter(x => x.filter(y => y.value.trim() !== '').length > 1).length;
 }
 
-module.exports = results => {
+module.exports = ({files, context}) => {
 
-    if (results.length === 0) {
-        console.log(`Nothing was found!`);
-        return;
-    }
+    files.forEach(f => {
+        if (f.blocks.length === 0) return;
 
-    // output for console
-    results.forEach(r => {
-        r.diffs.map(renderDiff);
+        console.log(`>> ${f.filePath}`);
+        f.blocks.map(renderDiff);
     });
 
     console.log();
-    console.log(`processed ${results.length} files`);
+    console.log(`${files.length} files matched by '${context.pattern}' in ${context.cwd}`);
 
-    results.forEach(r => {
+    files.forEach(r => {
         var count = countDifferingBlocks(r.diffs);
         if (count === 0) return;
 

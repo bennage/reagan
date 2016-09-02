@@ -3,6 +3,8 @@ const jsdiff = require('diff');
 const fetch = require('./fetch');
 const extractCodeBlocks = require('./extractCodeBlocks');
 
+const abbreviator = /^\s*\.\.\.\s*/gm;
+
 function snip(source, firstLine, lastLine) {
     var snippet = '';
     var lines = source.split('\n');
@@ -27,9 +29,34 @@ function removeLeadingWhitespace(block) {
     return lines.join('\n');
 }
 
-module.exports = function (markdownFiles) {
+function checkForAbbreviations(oldCode, newCode, diff) {
 
-    var pending = markdownFiles.map(filePath => {
+    // this works best in the positive case where the sample matches the source
+    // in the negative case, it requires manually intervention
+    var segments = oldCode.split(abbreviator);
+
+    // if an abbreviator is not found, 
+    // return the original diff
+    if (segments.length === 1) return diff;
+
+    // if the new code does not have exact matches for _everthing_ in the abbreviated code, 
+    // return an annotated diff
+    var segments_match = segments.every(s => newCode.indexOf(s) !== -1);
+    if (!segments_match) {
+        return diff;
+    }
+
+    // if all segments have a match,
+    // create a new diff communicating no differences
+    return [{
+        value: oldCode,
+        count: oldCode.length
+    }];
+}
+
+module.exports = ({files, context}) => {
+
+    var pending = files.map(filePath => {
 
         return fs
             .readFile(filePath, 'utf8')
@@ -47,22 +74,33 @@ module.exports = function (markdownFiles) {
                             var newCode = removeLeadingWhitespace(snippet);
 
                             var diff = jsdiff.diffChars(oldCode, newCode);
-                            diff.file = filePath;
-                            diff.firstLine = md.firstLine;
-                            diff.lastLine = md.lastLine;
-                            return diff;
+                            diff = checkForAbbreviations(oldCode, newCode, diff);
+
+                            return {
+                                diff: diff,
+                                firstLine: md.firstLine,
+                                lastLine: md.lastLine
+                            };
                         });
                 });
 
-                return Promise.all(validations)
-                    .then(diffs => {
+                return Promise
+                    .all(validations)
+                    .then(blocks => {
                         return {
                             filePath: filePath,
-                            diffs: diffs
+                            blocks: blocks
                         };
                     });
             });
     });
 
-    return Promise.all(pending);
+    return Promise
+        .all(pending)
+        .then(files => {
+            return {
+                files: files,
+                context: context
+            }
+        });
 };
