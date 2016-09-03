@@ -1,13 +1,16 @@
 const processFiles = require('./lib/processFiles');
 const listFiles = require('./lib/listFiles');
-const renderForConsole = require('./lib/render');
+const update = require('./lib/update');
+const render = require('./render');
 
 var ctx = {
     cwd: './test',
-    pattern: '**/*.md'
+    pattern: '**/*.md',
+    attemptUpdate: true
 };
 
 listFiles(ctx)
     .then(processFiles)
-    .then(renderForConsole)
+    .then(update)
+    .then(render)
     .catch(err => console.dir);

@@ -30,4 +30,6 @@ By default, Reagan will scan the current directory for files with an md extensio
     -V, --version          output the version number
     -f, --folder [folder]  the folder to search
     -i, --include [glob]   the pattern to match (defaults to **/*.md)
+    -u, --update           attempt to update local files
+    --strict               enforce exact matches
 ```
