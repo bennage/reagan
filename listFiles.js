@@ -1,8 +1,6 @@
-const fs = require('mz/fs');
-const path = require('path');
 const glob = require('resolve-glob');
 
-function scanFolder(cwd, pattern) {
+module.exports = function (cwd, pattern) {
 
     var context = {
         cwd: cwd,
@@ -19,6 +17,4 @@ function scanFolder(cwd, pattern) {
             resolve({ files: files, context: context });
         });
     });
-}
-
-module.exports = scanFolder;
+};
