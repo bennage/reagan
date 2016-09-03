@@ -1,6 +1,6 @@
-const processFiles = require('./processFiles');
-const listFiles = require('./listFiles');
-const renderForConsole = require('./renderForConsole');
+const processFiles = require('./lib/processFiles');
+const listFiles = require('./lib/listFiles');
+const renderForConsole = require('./lib/renderForConsole');
 
 listFiles('./test', '**/*.md')
     .then(processFiles)
