@@ -1,5 +1,6 @@
 # Reagan
-_Trust, but verify._
+
+<a title="By tcm (screenshots from trailer) [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File%3ARonald_Reagan_in_The_Bad_Man_(1941).png"><img width="256" alt="Ronald Reagan in The Bad Man (1941)" src="https://upload.wikimedia.org/wikipedia/commons/1/1e/Ronald_Reagan_in_The_Bad_Man_%281941%29.png"/></a>
 
 Reagan is a tool for verifying that code samples embedded in a markdown document are in sync with the GitHub-hosted source files.
 

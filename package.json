@@ -2,9 +2,15 @@
     "name": "reagan",
     "version": "0.0.6",
     "description": "compare code blocks in markdown documents to source files hosted on GitHub",
+    "keywords": [
+        "markdown", "md", "code samples", "github"
+    ],
     "repository": {
         "type": "git",
         "url": "https://github.com/bennage/reagan"
+    },
+    "bugs": {
+        "url": "https://github.com/bennage/reagan/issues"
     },
     "main": "index.js",
     "scripts": {
