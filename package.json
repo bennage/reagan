@@ -1,6 +1,6 @@
 {
   "name": "reagan",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "compare code blocks in markdown documents to source files hosted on GitHub",
   "keywords": [
     "markdown",
