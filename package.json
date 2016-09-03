@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/bennage/reagan/issues"
   },
-  "main": "index.js",
+  "main": "lib/cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -33,7 +33,7 @@
     "resolve-glob": "^0.1.8"
   },
   "bin": {
-    "reagan": "index.js"
+    "reagan": "lib/cli.js"
   },
   "readmeFilename": "README.md"
 }
