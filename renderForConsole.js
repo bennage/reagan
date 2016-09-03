@@ -1,25 +1,25 @@
-const colors = require('colors');
+const chalk = require('chalk');
+const error = chalk.bold.red;
+const success = chalk.bold.green;
 
 function renderDiff(block) {
 
     var location = `lines ${block.firstLine}-${block.lastLine}`;
 
     if (block.diff.length === 1) {
-        process.stdout.write('✓ '.green);
+        process.stdout.write(success('✓ '));
         process.stdout.write(location);
         process.stdout.write('\n');
         return;
     }
 
-    process.stderr.write('✗ '.red);
+    process.stderr.write(error('✗ '));
     process.stderr.write(location);
     process.stderr.write('\n');
 
     block.diff.forEach(part => {
-        // green for additions, red for deletions 
-        // grey for common parts 
-        var color = part.added ? 'green' :
-            part.removed ? 'red' : 'grey';
+        var color = part.added ? chalk.green :
+            part.removed ? chalk.red : chalk.gray;
 
         // replace spaces with middot
         if (part.added || part.removed) {
@@ -27,7 +27,7 @@ function renderDiff(block) {
             //TODO: tabs are not showing up in the diff
             // part.value = part.value.replace(/\t/g, '¯');
         }
-        process.stderr.write(part.value[color]);
+        process.stderr.write(color(part.value));
     });
 }
 
