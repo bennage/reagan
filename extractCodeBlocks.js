@@ -1,7 +1,7 @@
 const rawUrlBase = 'https://raw.githubusercontent.com/';
 
-const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
-const codeDelimiter = /[ \t]*```([\w]*)\s*\n/ig;
+const sourcePattern = /<!--\s*source:\s*https:\/\/github.com\/([_a-z\d/./-]*)#L(\d*)(?:-L(\d*))?\s*-->/ig;
+const codeDelimiter = /[ \t]*```([\w]*)\s*\n?/ig;
 
 function removeLanguageComment(language, code) {
     // TODO: there should be an option to disable this
