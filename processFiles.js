@@ -23,7 +23,8 @@ function removeLeadingWhitespace(block) {
     // leading white space is determined by the first lines
     var result = leadingWhitespace.exec(lines[0]);
     if (result) {
-        lines = lines.map(l => l.slice(result[1].length));
+        var lenToTrim = result[1].length;
+        lines = lines.map(l => l.slice(lenToTrim));
     }
 
     return lines.join('\n');
